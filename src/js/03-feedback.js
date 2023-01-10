@@ -4,19 +4,21 @@ const emailInput = document.querySelector('input');
 const messageInput = document.querySelector('textarea');
 
 let storagedInput;
-form.addEventListener('input', throttle(() => {
-  storagedInput = {
-    email: emailInput.value,
-    message: messageInput.value,
-  };
-  localStorage.setItem('feedback-form-state', JSON.stringify(storagedInput));
-  sessionStorage.setItem('reload', true);
-}, 500));
+form.addEventListener(
+  'input',
+  throttle(() => {
+    storagedInput = {
+      email: emailInput.value,
+      message: messageInput.value,
+    };
+    localStorage.setItem('feedback-form-state', JSON.stringify(storagedInput));
+  }, 500)
+);
 
-form.addEventListener('submit', () => {
+form.addEventListener('submit', event => {
+  event.preventDefault();
   console.log({ email: emailInput.value, message: messageInput.value });
   localStorage.removeItem('feedback-form-state');
-  sessionStorage.removeItem('reload');
   form.reset();
 });
 
@@ -24,10 +26,10 @@ const siteReset = () => {
   let currentStorage = JSON.parse(localStorage.getItem('feedback-form-state'));
   if (currentStorage.email || currentStorage.message) {
     emailInput.setAttribute('value', currentStorage.email);
-    messageInput.setAttribute('placeholder', currentStorage.message);
+    messageInput.setAttribute('value', currentStorage.message);
   }
 };
 
-if (sessionStorage.length === 1) {
+if (localStorage.getItem('feedback-form-state')) {
   siteReset();
 }
