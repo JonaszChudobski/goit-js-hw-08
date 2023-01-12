@@ -25,8 +25,8 @@ form.addEventListener('submit', event => {
 const siteReset = () => {
   let currentStorage = JSON.parse(localStorage.getItem('feedback-form-state'));
   if (currentStorage.email || currentStorage.message) {
-    emailInput.setAttribute('value', currentStorage.email);
-    messageInput.innerHTML = currentStorage.message;
+    emailInput.value = currentStorage.email;
+    messageInput.value = currentStorage.message;
   }
 };
 
